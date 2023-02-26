@@ -2,8 +2,20 @@
 import Animation from "~~/assets/animation";
 
 onMounted(() => {
+  let window_w = window.innerWidth;
   const app = new Animation();
-  app.init();
+  if (window_w > 768) {
+    app.init_pc();
+  } else {
+    app.init_mobile();
+  }
+
+  window.addEventListener("resize", () => {
+    if (window_w != window.innerWidth) {
+      window_w = window.innerWidth;
+      app.onResize();
+    }
+  });
 });
 
 /*----------------
@@ -19,7 +31,6 @@ useHead({
     <div class="container">
       <NuxtPage />
     </div>
-    <div class="js-height">Height : <span></span></div>
   </div>
 </template>
 
@@ -38,5 +49,15 @@ useHead({
   top: 0;
   left: 0;
   display: flex;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    width: 100%;
+  }
+  .container {
+    width: 100%;
+    flex-direction: column;
+  }
 }
 </style>
